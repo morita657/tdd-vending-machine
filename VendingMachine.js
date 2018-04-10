@@ -70,7 +70,7 @@ class VendingMachine {
     if (isChangeAvailable && isItemAvailable && isBalanceEnough) {
       selectedItem.count--;
       console.log("Here is your " + selectedItem.name);
-      const calculatedChange = this._dispenseChange(selectedItem.price);
+      const calculatedChange = this._calculateChangeTotal(selectedItem.price);
       this._initialise();
       return calculatedChange;
     }
@@ -79,7 +79,7 @@ class VendingMachine {
   }
 
   _checkChange(price) {
-    if (this._calculateChange(this.balance - price)) {
+    if (this._calculateChangeDenomination(this.balance - price)) {
       return true;
     } else {
       console.error("No change available.");
@@ -106,12 +106,13 @@ class VendingMachine {
     return true;
   }
 
-  _dispenseChange(price) {
+  _calculateChangeTotal(price) {
     let change = this.balance - price;
 
-    const returnedCoins = this._calculateChange(change);
+    const returnedCoins = this._calculateChangeDenomination(change);
 
     console.log(returnedCoins);
+    this._console.push(returnedCoins);
 
     let returnedTotal = 0;
 
@@ -122,7 +123,7 @@ class VendingMachine {
     return returnedTotal;
   }
 
-  _calculateChange(change) {
+  _calculateChangeDenomination(change) {
     const returnedCoins = {
       10: 0,
       50: 0,
