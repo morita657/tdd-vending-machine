@@ -7,6 +7,7 @@ class VendingMachine {
       100: 0,
       500: 0,
     };
+    this.selection = { row: undefined, column: undefined };
   }
 
   insertCoin(coin) {
@@ -21,6 +22,19 @@ class VendingMachine {
       total += this.till[coin] * coin;
     }
     return total;
+  }
+
+  pressButton(button) {
+    if (typeof button === "string") {
+      this._select(button, "row");
+    } else if (this.selection.row) {
+      this._select(button, "column");
+    }
+  }
+
+  _select(button, type) {
+    this.selection[type] = button;
+    console.log(button);
   }
 }
 
