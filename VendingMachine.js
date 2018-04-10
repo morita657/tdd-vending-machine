@@ -29,21 +29,23 @@ class VendingMachine {
 
   pressButton(button) {
     if (typeof button === "string") {
-      this._selectRow(button);
+      return this._selectRow(button);
     } else if (this.selection.row) {
-      this._selectColumn(button);
+      return this._selectColumn(button);
     }
   }
 
   _selectRow(row) {
     this.selection.row = row;
     console.log(row);
+    return row;
   }
 
   _selectColumn(column) {
     this.selection.column = column;
     console.log(this.selection.row, column);
     this._vend();
+    return `${this.selection.row}, ${column}`;
   }
 
   _vend() {
