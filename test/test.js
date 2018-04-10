@@ -91,6 +91,54 @@ describe("vending machine", () => {
     machine.pressButton(1);
 
     // Assert
-    expect(machine.inventory[0][0].count).to.be(4);
+    expect(machine.inventory[0][0].count).to.equal(4);
+  });
+
+  it("should return the correct change", () => {
+    // Setup
+    const machine = new VendingMachine(inventory);
+
+    // Exercise
+    machine.insertCoin(500);
+    machine.insertCoin(500);
+    machine.insertCoin(500);
+    machine.pressButton("A");
+    machine.pressButton(4);
+
+    // Assert
+    // expect(machine.pressButton("B")).to.equal("B");
+    // expect(machine.pressButton("B")).to.equal("B");
+  });
+
+  it("should reinitalise after vending", () => {
+    // Setup
+    const machine = new VendingMachine(inventory);
+
+    // Exercise
+    machine.insertCoin(500);
+    machine.insertCoin(500);
+    machine.insertCoin(500);
+    machine.pressButton("A");
+    machine.pressButton(4);
+
+    // Assert
+    expect(machine.selection.row).to.be.undefined;
+    expect(machine.selection.column).to.be.undefined;
+  });
+
+  it("should dispay warning if not enough coins inserted", () => {
+    // Setup
+    const machine = new VendingMachine(inventory);
+
+    // Exercise
+    machine.insertCoin(500);
+    machine.pressButton("B");
+    machine.pressButton(2);
+    machine.insertCoin(500);
+    machine.pressButton("B");
+    machine.pressButton(2);
+
+    // Assert
+    // expect(machine.selection.row).to.be.undefined;
   });
 });
