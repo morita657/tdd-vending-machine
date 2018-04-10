@@ -141,4 +141,12 @@ describe("vending machine", () => {
     // Assert
     // expect(machine.selection.row).to.be.undefined;
   });
+
+  it("should have balance of zero when no coins inserted", () => {
+    // Setup
+    const machine = new VendingMachine(inventory);
+
+    // Assert
+    expect(machine.balance).to.equal(0);
+  });
 });
