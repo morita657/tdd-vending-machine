@@ -35,4 +35,27 @@ describe("vending machine", () => {
     });
     expect(machine.balance).to.equal(0);
   });
+
+  it("should accept a letter A-D as a row selection when no row is selected", () => {
+    // Setup
+    const machine = new VendingMachine();
+
+    // Exercise
+    machine.pressButton("A");
+
+    // Assert
+    expect(machine.selection.row).to.equal("A");
+  });
+
+  it("should reject a number when no row is selected", () => {
+    // Setup
+    const machine = new VendingMachine();
+
+    // Exercise
+    machine.pressButton(1);
+
+    // Assert
+    expect(machine.selection.row).to.be.undefined;
+    expect(machine.selection.column).to.be.undefined;
+  });
 });
