@@ -28,7 +28,6 @@ class VendingMachine {
     for (let coin in this.till) {
       tillTotal += this.till[coin] * coin;
     }
-    console.log(tillTotal);
     return tillTotal;
   }
 
@@ -64,24 +63,47 @@ class VendingMachine {
     const column = this.selection.column - 1;
     const selectedItem = this.inventory[row][column];
 
-    const changeAvailable = this._calculateChange(
-      this.balance - selectedItem.price
-    );
+    const isChangeAvailable = this._checkChange(selectedItem.price);
+    const isItemAvailable = this._checkCount(selectedItem.count);
+    const isBalanceEnough = this._checkEnough(selectedItem.price);
 
-    if (!changeAvailable) {
-      console.error("No change available.");
-      this._console.push("No change available.");
-    } else if (selectedItem.count === 0) {
-      console.error("Out of stock.");
-      this._console.push("Out of stock.");
-    } else if (this._tillTotal < selectedItem.price) {
-      console.error("Not enough money.");
-      this._console.push("Not enough money.");
-    } else {
+    if (isChangeAvailable && isItemAvailable && isBalanceEnough) {
       selectedItem.count--;
       console.log("Here is your " + selectedItem.name);
-      return this._dispenseChange(selectedItem.price);
+      const calculatedChange = this._dispenseChange(selectedItem.price);
+      this._initialise();
+      return calculatedChange;
     }
+
+    this._initialise();
+  }
+
+  _checkChange(price) {
+    if (this._calculateChange(this.balance - price)) {
+      return true;
+    } else {
+      console.error("No change available.");
+      this._console.push("No change available.");
+      return false;
+    }
+  }
+
+  _checkCount(count) {
+    if (count === 0) {
+      console.error("Out of stock.");
+      this._console.push("Out of stock.");
+      return false;
+    }
+    return true;
+  }
+
+  _checkEnough(price) {
+    if (this._tillTotal < price) {
+      console.error("Not enough money.");
+      this._console.push("Not enough money.");
+      return false;
+    }
+    return true;
   }
 
   _dispenseChange(price) {
@@ -90,8 +112,6 @@ class VendingMachine {
     const returnedCoins = this._calculateChange(change);
 
     console.log(returnedCoins);
-
-    this._initialise();
 
     let returnedTotal = 0;
 
