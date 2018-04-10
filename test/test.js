@@ -113,6 +113,31 @@ describe("vending machine", () => {
     expect(machine.pressButton(4)).to.equal(200);
   });
 
+  it("should log the correct change denominations", () => {
+    // Setup
+    const machine = new VendingMachine(inventory);
+    const expectedChange = {
+      10: 0,
+      50: 0,
+      100: 2,
+      500: 0,
+    };
+
+    // Exercise
+    machine.insertCoin(500);
+    machine.insertCoin(500);
+    machine.insertCoin(100);
+    machine.insertCoin(100);
+    machine.insertCoin(100);
+    machine.insertCoin(100);
+    machine.insertCoin(100);
+    machine.pressButton("A");
+    machine.pressButton(4);
+
+    // Assert
+    expect(machine._console[3]).to.deep.equal(expectedChange);
+  });
+
   it("should give an error if no change is available", () => {
     // Setup
     const machine = new VendingMachine(inventory);
