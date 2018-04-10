@@ -14,6 +14,7 @@ class VendingMachine {
     };
     this.selection = { row: undefined, column: undefined };
     this.coinsInserted = [];
+    this._console = [];
   }
 
   insertCoin(coin) {
@@ -38,14 +39,14 @@ class VendingMachine {
   _selectRow(row) {
     this.selection.row = row;
     console.log(row);
-    return row;
+    this._console.push(row);
   }
 
   _selectColumn(column) {
     this.selection.column = column;
     console.log(this.selection.row, column);
+    this._console.push(this.selection.row, column);
     this._vend();
-    return `${this.selection.row}, ${column}`;
   }
 
   _vend() {
@@ -58,7 +59,11 @@ class VendingMachine {
     const row = buttonMap[this.selection.row];
     const column = this.selection.column - 1;
 
-    if (this.inventory[row][column].price <= this.balance) {
+    if (this.inventory[row][column].count === 0) {
+      console.error("Out of stock.");
+      console.log(this._console);
+      this._console.push("Out of stock.");
+    } else if (this.inventory[row][column].price <= this.balance) {
       this.inventory[row][column].count--;
       console.log("Here is your " + this.inventory[row][column].name);
 
@@ -66,6 +71,7 @@ class VendingMachine {
     } else {
       // give error
       console.error("Not enough money.");
+      this._console.push("Not enough money.");
     }
   }
 
