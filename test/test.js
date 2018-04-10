@@ -53,15 +53,7 @@ describe("vending machine", () => {
     machine.pressButton("A");
 
     // Assert
-    expect(machine.selection.row).to.equal("A");
-  });
-
-  it("should return the row when a valid selection is made", () => {
-    // Setup
-    const machine = new VendingMachine(inventory);
-
-    // Assert
-    expect(machine.pressButton("A")).to.equal("A");
+    expect(machine._console[0]).to.equal("A");
   });
 
   it("should reject a number when no row is selected", () => {
@@ -142,12 +134,10 @@ describe("vending machine", () => {
     machine.insertCoin(500);
     machine.pressButton("B");
     machine.pressButton(2);
-    machine.insertCoin(500);
-    machine.pressButton("B");
-    machine.pressButton(2);
 
     // Assert
     // expect(machine.selection.row).to.be.undefined;
+    expect(machine._console[3]).to.equal("Not enough money.");
   });
 
   it("should have balance of zero when no coins inserted", () => {
@@ -156,5 +146,20 @@ describe("vending machine", () => {
 
     // Assert
     expect(machine.balance).to.equal(0);
+  });
+
+  it("should display error if item count is zero", () => {
+    // Setup
+    const machine = new VendingMachine(inventory);
+
+    // Exercise
+    machine.insertCoin(500);
+    machine.insertCoin(500);
+    machine.insertCoin(500);
+    machine.pressButton("C");
+    machine.pressButton(4);
+
+    // Assert
+    expect(machine._console[3]).to.equal("Out of stock.");
   });
 });
