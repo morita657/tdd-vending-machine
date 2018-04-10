@@ -1,11 +1,6 @@
 class VendingMachine {
   constructor(items) {
     this.inventory = items;
-    // item = {
-    //   name: 'pizza',
-    //   price: 2000,
-    //   count = 6
-    // }
     this.till = {
       10: 0,
       50: 0,
@@ -28,9 +23,18 @@ class VendingMachine {
     return this.coinsInserted.reduce((total, nextCoin) => total + nextCoin, 0);
   }
 
+  get _tillTotal() {
+    let tillTotal = 0;
+    for (let coin in this.till) {
+      tillTotal += this.till[coin] * coin;
+    }
+    console.log(tillTotal);
+    return tillTotal;
+  }
+
   pressButton(button) {
     if (typeof button === "string") {
-      return this._selectRow(button);
+      this._selectRow(button);
     } else if (this.selection.row) {
       return this._selectColumn(button);
     }
@@ -46,7 +50,7 @@ class VendingMachine {
     this.selection.column = column;
     console.log(this.selection.row, column);
     this._console.push(this.selection.row, column);
-    this._vend();
+    return this._vend();
   }
 
   _vend() {
@@ -58,20 +62,25 @@ class VendingMachine {
     };
     const row = buttonMap[this.selection.row];
     const column = this.selection.column - 1;
+    const selectedItem = this.inventory[row][column];
 
-    if (this.inventory[row][column].count === 0) {
+    const changeAvailable = this._calculateChange(
+      this.balance - selectedItem.price
+    );
+
+    if (!changeAvailable) {
+      console.error("No change available.");
+      this._console.push("No change available.");
+    } else if (selectedItem.count === 0) {
       console.error("Out of stock.");
-      console.log(this._console);
       this._console.push("Out of stock.");
-    } else if (this.inventory[row][column].price <= this.balance) {
-      this.inventory[row][column].count--;
-      console.log("Here is your " + this.inventory[row][column].name);
-
-      this._dispenseChange(this.inventory[row][column].price);
-    } else {
-      // give error
+    } else if (this._tillTotal < selectedItem.price) {
       console.error("Not enough money.");
       this._console.push("Not enough money.");
+    } else {
+      selectedItem.count--;
+      console.log("Here is your " + selectedItem.name);
+      return this._dispenseChange(selectedItem.price);
     }
   }
 
@@ -83,6 +92,14 @@ class VendingMachine {
     console.log(returnedCoins);
 
     this._initialise();
+
+    let returnedTotal = 0;
+
+    for (let coin in returnedCoins) {
+      returnedTotal += returnedCoins[coin] * coin;
+    }
+
+    return returnedTotal;
   }
 
   _calculateChange(change) {
@@ -113,6 +130,8 @@ class VendingMachine {
       this.till[10]--;
       change -= 10;
     }
+
+    if (change > 0) return false;
 
     return returnedCoins;
   }
