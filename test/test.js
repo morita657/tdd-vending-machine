@@ -18,4 +18,21 @@ describe("vending machine", () => {
     });
     expect(machine.balance).to.equal(500); // Use an ES6 getter
   });
+
+  it("should reject non-existent coins", () => {
+    // Setup
+    const machine = new VendingMachine();
+
+    // Exercise
+    machine.insertCoin(13);
+
+    // Assert
+    expect(machine.till).to.deep.equal({
+      10: 0,
+      50: 0,
+      100: 0,
+      500: 0,
+    });
+    expect(machine.balance).to.equal(0);
+  });
 });
