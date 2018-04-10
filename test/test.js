@@ -101,13 +101,31 @@ describe("vending machine", () => {
     // Exercise
     machine.insertCoin(500);
     machine.insertCoin(500);
-    machine.insertCoin(500);
+    machine.insertCoin(100);
+    machine.insertCoin(100);
+    machine.insertCoin(100);
+    machine.insertCoin(100);
+    machine.insertCoin(100);
     machine.pressButton("A");
-    machine.pressButton(4);
+    //machine.pressButton(4);
 
     // Assert
-    // expect(machine.pressButton("B")).to.equal("B");
-    // expect(machine.pressButton("B")).to.equal("B");
+    expect(machine.pressButton(4)).to.equal(200);
+  });
+
+  it("should give an error if no change is available", () => {
+    // Setup
+    const machine = new VendingMachine(inventory);
+
+    // Exercise
+    machine.insertCoin(500);
+    machine.insertCoin(500);
+    machine.insertCoin(500);
+    machine.pressButton("A");
+    machine.pressButton(1);
+
+    // Assert
+    expect(machine._console[3]).to.equal("No change available.");
   });
 
   it("should reinitalise after vending", () => {
@@ -117,7 +135,9 @@ describe("vending machine", () => {
     // Exercise
     machine.insertCoin(500);
     machine.insertCoin(500);
-    machine.insertCoin(500);
+    machine.insertCoin(100);
+    machine.insertCoin(100);
+    machine.insertCoin(100);
     machine.pressButton("A");
     machine.pressButton(4);
 
