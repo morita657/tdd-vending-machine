@@ -1,6 +1,11 @@
 class VendingMachine {
   constructor(items) {
     this.inventory = items;
+    // item = {
+    //   name: 'pizza',
+    //   price: 2000,
+    //   count = 6
+    // }
     this.till = {
       10: 0,
       50: 0,
@@ -26,15 +31,20 @@ class VendingMachine {
 
   pressButton(button) {
     if (typeof button === "string") {
-      this._select(button, "row");
+      this._selectRow(button);
     } else if (this.selection.row) {
-      this._select(button, "column");
+      this._selectColumn(button);
     }
   }
 
-  _select(button, type) {
-    this.selection[type] = button;
-    console.log(button);
+  _selectRow(row) {
+    this.selection.row = row;
+    console.log(row);
+  }
+
+  _selectColumn(column) {
+    this.selection.column = column;
+    console.log(this.selection.row, column);
   }
 }
 
