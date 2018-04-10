@@ -56,6 +56,14 @@ describe("vending machine", () => {
     expect(machine.selection.row).to.equal("A");
   });
 
+  it("should return the row when a valid selection is made", () => {
+    // Setup
+    const machine = new VendingMachine(inventory);
+
+    // Assert
+    expect(machine.pressButton("A")).to.equal("A");
+  });
+
   it("should reject a number when no row is selected", () => {
     // Setup
     const machine = new VendingMachine(inventory);
