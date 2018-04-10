@@ -13,20 +13,18 @@ class VendingMachine {
       500: 0,
     };
     this.selection = { row: undefined, column: undefined };
+    this.coinsInserted = [];
   }
 
   insertCoin(coin) {
     if (this.till.hasOwnProperty(coin)) {
       this.till[coin]++;
+      this.coinsInserted.push(coin);
     }
   }
 
   get balance() {
-    let total = 0;
-    for (let coin in this.till) {
-      total += this.till[coin] * coin;
-    }
-    return total;
+    return this.coinsInserted.reduce((total, nextCoin) => total + nextCoin, 0);
   }
 
   pressButton(button) {
