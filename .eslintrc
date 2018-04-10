@@ -1,0 +1,19 @@
+{
+  "env": {
+    "browser": true,
+    "jasmine": true,
+    "mocha": true,
+    "es6": true,
+    "node": true
+  },
+  "plugins": ["prettier"],
+  "rules": {
+    "prettier/prettier": "error",
+    "no-console": 0
+  },
+  "extends": ["eslint:recommended", "plugin:prettier/recommended"],
+  "globals": {
+    "_": true,
+    "testForNativeMethods": true
+  }
+}
