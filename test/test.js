@@ -79,4 +79,18 @@ describe("vending machine", () => {
     expect(machine.selection.row).to.be.undefined;
     expect(machine.selection.column).to.be.undefined;
   });
+
+  it("should decrease by 1", () => {
+    // Setup
+    const machine = new VendingMachine(inventory);
+
+    // Exercise
+    machine.insertCoin(100);
+    machine.insertCoin(50);
+    machine.pressButton("A");
+    machine.pressButton(1);
+
+    // Assert
+    expect(machine.inventory[0][0].count).to.be(4);
+  });
 });
